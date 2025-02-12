@@ -28,7 +28,7 @@
 
     // Функция для обработки GET-запроса
     const params = new URLSearchParams(window.location.search);
-    const userMessage = params.get("ссылка") || "Привет"; // Если параметр 'ссылка' отсутствует, используем "Привет"
+    const userMessage = params.get("sms") || "Привет"; // Если параметр 'ссылка' отсутствует, используем "Привет"
     const chat = model.startChat({ generationConfig: { temperature: 1, topP: 0.95, topK: 64, maxOutputTokens: 8192 } });
 
     (async () => {
