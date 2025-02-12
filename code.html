@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nastya_UltraOs</title>
+</head>
+<body>
+
+<div id="response"></div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+</script>
+
+<script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    const genAI = new GoogleGenerativeAI("ВАШ_API_КЛЮЧ");
+    const model = genAI.getGenerativeModel({
+        model: "gemini-2.0-pro-exp-02-05",
+        systemInstruction: "Ты чат помощник Настя..."
+    });
+
+    const chat = model.startChat({ generationConfig: { temperature: 1, topP: 0.95, topK: 64, maxOutputTokens: 8192 } });
+
+    function getMessageFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('ссылка'); // Здесь 'ссылка' - это имя параметра
+    }
+
+    async function sendMessage() {
+        const userMessage = getMessageFromURL() || "Привет"; // Если параметра нет, используем "Привет"
+        try {
+            const response = await (await chat.sendMessage(userMessage)).response.text();
+            document.getElementById('response').innerText = response;
+        } catch {
+            document.getElementById('response').innerText = 'Извините, произошла ошибка.';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', sendMessage);
+</script>
+
+</body>
+</html>
