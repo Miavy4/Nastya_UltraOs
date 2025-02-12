@@ -26,24 +26,19 @@
         systemInstruction: "Ты чат помощник Настя..."
     });
 
+    // Функция для обработки GET-запроса
+    const params = new URLSearchParams(window.location.search);
+    const userMessage = params.get("ссылка") || "Привет"; // Если параметр 'ссылка' отсутствует, используем "Привет"
     const chat = model.startChat({ generationConfig: { temperature: 1, topP: 0.95, topK: 64, maxOutputTokens: 8192 } });
 
-    function getMessageFromURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('sms'); // Здесь 'ссылка' - это имя параметра
-    }
-
-    async function sendMessage() {
-        const userMessage = getMessageFromURL() || "Привет"; // Если параметра нет, используем "Привет"
+    (async () => {
         try {
             const response = await (await chat.sendMessage(userMessage)).response.text();
             document.getElementById('response').innerText = response;
         } catch {
             document.getElementById('response').innerText = 'Извините, произошла ошибка.';
         }
-    }
-
-    document.addEventListener('DOMContentLoaded', sendMessage);
+    })();
 </script>
 
 </body>
