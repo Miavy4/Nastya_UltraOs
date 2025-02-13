@@ -1,13 +1,49 @@
-<!DOCTYPE html>
-<html lang="ru">
+DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nastya_UltraOs</title>
+    <title>Gemini Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #chat {
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 400px;
+            padding: 10px;
+            overflow-y: scroll;
+            background-color: #fff;
+        }
+        #input {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+        }
+        #userInput {
+            flex: 1;
+            padding: 5px;
+        }
+        #sendButton {
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body>
 
-<div id="response"></div>
+<div id="chat"></div>
+<div id="input">
+    <input type="text" id="userInput" placeholder="Type your message..." />
+    <button id="sendButton">Send</button>
+</div>
 
 <script type="importmap">
   {
@@ -20,23 +56,55 @@
 <script type="module">
     import { GoogleGenerativeAI } from "@google/generative-ai";
 
-    const genAI = new GoogleGenerativeAI("AIzaSyAhxagvITOp6_QMgEAX0bimLtrFhJRTvzA");
+    // Fetch your API_KEY from an environment variable
+    const API_KEY = "AIzaSyAhxagvITOp6_QMgEAX0bimLtrFhJRTvzA"; // замените на фактический API-ключ
+    const genAI = new GoogleGenerativeAI(API_KEY);
+
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-pro-exp-02-05",
-        systemInstruction: "Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165, русые волосы, серые глаза, зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать."
+        model: "gemini-2.0-flash",
+        systemInstruction: "Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165 , русые волосы, серые глаза , зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать.",
     });
 
-    const userMessage = "Привет";
-    const chat = model.startChat({ generationConfig: { temperature: 1, topP: 0.95, topK: 64, maxOutputTokens: 8192 } });
+    const generationConfig = {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 8192,
+        responseMimeType: "text/plain",
+    };
 
-    (async () => {
-        try {
-            const response = await (await chat.sendMessage(userMessage)).response.text();
-            document.getElementById('response').innerText = response;
-        } catch {
-            document.getElementById('response').innerText = 'Извините, произошла ошибка.';
+    const chat = model.startChat({
+        generationConfig,
+        history: [],
+    });
+
+    const chatDiv = document.getElementById('chat');
+    const userInput = document.getElementById('userInput');
+    const sendButton = document.getElementById('sendButton');
+
+    sendButton.addEventListener('click', async () => {
+        const userMessage = userInput.value;
+        if (!userMessage) return;
+
+        // Отображаем сообщение пользователя
+        chatDiv.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+        userInput.value = '';
+
+        // Отправляем сообщение пользователя в модель Gemini
+        const result = await chat.sendMessage(userMessage);
+        const response = await result.response;
+        const text = await response.text();
+
+        // Отображаем ответ модели
+        chatDiv.innerHTML += `<div><strong>Gemini:</strong> ${text}</div>`;
+        chatDiv.scrollTop = chatDiv.scrollHeight; // Автоскролл в конец
+    });
+
+    userInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            sendButton.click();
         }
-    })();
+    });
 </script>
 
 </body>
