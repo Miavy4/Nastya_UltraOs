@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nastya UltraOs v0.1.3</title>
+    <title>Nastya UltraOs v0.1.4</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0;
+            background-image: url('/Screenshot_20250211-151946_Anixart.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .chat-container {
@@ -22,18 +25,39 @@
             width: 100%;
             height: 100%;
             max-width: 600px;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.8); /* Частично прозрачный фон для читабельности текста */
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
         #chat {
+            display: flex;
+            flex-direction: column-reverse;
             flex-grow: 1;
             padding: 10px;
             overflow-y: auto;
             border-bottom: 1px solid #eee;
-            background-color: #ffffff;
+            background-color: transparent;
+        }
+
+        .message {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 70%;
+        }
+
+        .user-message {
+            border: 2px solid #40e0d0;
+            align-self: flex-end;
+            background-color: #e0f7fa;
+        }
+
+        .ai-message {
+            border: 2px solid #007bff;
+            align-self: flex-start;
+            background-color: #e7f0ff;
         }
 
         #input {
@@ -118,15 +142,14 @@
         const userMessage = userInput.value;
         if (!userMessage) return;
 
-        chatDiv.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+        chatDiv.innerHTML = `<div class="message user-message"><strong>You:</strong> ${userMessage}</div>` + chatDiv.innerHTML;
         userInput.value = '';
 
         const result = await chat.sendMessage(userMessage);
         const response = await result.response;
         const text = await response.text();
 
-        chatDiv.innerHTML += `<div><strong>Gemini:</strong> ${text}</div>`;
-        chatDiv.scrollTop = chatDiv.scrollHeight;
+        chatDiv.innerHTML = `<div class="message ai-message"><strong>Gemini:</strong> ${text}</div>` + chatDiv.innerHTML;
     });
 
     userInput.addEventListener('keypress', (event) => {
