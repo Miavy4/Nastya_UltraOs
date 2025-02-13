@@ -3,19 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nastya UltraOs v0.1.5</title>
+    <title>Nastya UltraOs</title>
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('./Screenshot_20250211-151946_Anixart.jpg');
+            flex-direction: column;
+            background-image: url('./dark-background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to right, #001f3f, #000000);
+            padding: 10px;
+            color: white;
+            font-weight: bold;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .header h1 {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .header h1 span {
+            color: turquoise;
+        }
+
+        .header h1 span:last-child {
+            color: white;
+        }
+
+        .menu-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
 
         .chat-container {
@@ -23,11 +60,10 @@
             flex-direction: column;
             justify-content: flex-end;
             width: 100%;
-            height: 100%;
-            max-width: 600px;
-            background-color: rgba(255, 255, 255, 0.8); /* Частично прозрачный фон для читабельности текста */
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: calc(100% - 50px); /* Учитываем высоту заголовка */
+            background-color: rgba(255, 255, 255, 0.01);
+            border: none; /* Убираем обводку */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
@@ -37,7 +73,7 @@
             flex-grow: 1;
             padding: 10px;
             overflow-y: auto;
-            border-bottom: 1px solid #eee;
+            border: none; /* Установка границ на null */
             background-color: transparent;
         }
 
@@ -63,7 +99,7 @@
         #input {
             display: flex;
             padding: 10px;
-            background-color: #fafafa;
+            background: linear-gradient(to right, #001f3f, #000000);
             width: 100%;
             box-sizing: border-box;
         }
@@ -90,9 +126,85 @@
         #sendButton:hover {
             background-color: #0056b3;
         }
+
+        /* Menu styles */
+        .menu {
+            display: none; /* Скрываем меню по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #001f3f, #000000);
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .menu.active {
+            display: block; /* Показываем меню при активации */
+        }
+
+        .menu button {
+            width: 100%;
+            padding: 15px;
+            background-color: #001f3f;
+            border: none;
+            color: white;
+            font-size: 18px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .menu button.telegram {
+            background-color: #40e0d0; /* Цвет для Telegram */
+        }
+
+        .menu-footer {
+            margin-top: auto;
+            text-align: center;
+        }
+
+        /* Языковое меню */
+        .language-menu {
+            display: none; /* Скрываем меню по умолчанию */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .language-menu.active {
+            display: block; /* Показываем меню при активации */
+        }
+
+        .language-menu button {
+            width: 100%;
+            padding: 10px;
+            background-color: #001f3f;
+            border: none;
+            color: white;
+            font-size: 16px;
+            margin: 5px 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+
+<div class="header">
+    <h1>
+        <span>Nastya</span>
+        <span>UltraOs</span>
+    </h1>
+    <button class="menu-button" id="menuButton">⋮</button>
+</div>
 
 <div class="chat-container">
     <div id="chat"></div>
@@ -100,6 +212,30 @@
         <input type="text" id="userInput" placeholder="Type your message..." />
         <button id="sendButton">Send</button>
     </div>
+</div>
+
+<!-- Main Menu -->
+<div class="menu" id="menu">
+    <button id="backButton">Back ←</button>
+    <button class="telegram" onclick="window.open('https://t.me/Miavy_room', '_blank')">Telegram Channel</button>
+    <button id="languageButton">Language</button>
+    <div class="menu-footer">
+        <p>Разработчик - Miavy</p>
+        <p>Команда - UltraOs</p>
+        <p>Версия - 0.1.6</p>
+    </div>
+</div>
+
+<!-- Языковое меню -->
+<div class="language-menu" id="languageMenu">
+    <h2>Выберите язык:</h2>
+    <button onclick="selectLanguage('en')">Английский</button>
+    <button onclick="selectLanguage('zh')">Мандаринский</button>
+    <button onclick="selectLanguage('hi')">Хинди</button>
+    <button onclick="selectLanguage('es')">Испанский</button>
+    <button onclick="selectLanguage('fr')">Французский</button>
+    <button onclick="selectLanguage('ar')">Арабский</button>
+    <button onclick="selectLanguage('ru')">Русский</button>
 </div>
 
 <script type="importmap">
@@ -118,7 +254,7 @@
 
     const model = genAI.getGenerativeModel({
         model: "gemini-2.0-flash",
-        systemInstruction: "Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165 , русые волосы, серые глаза , зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать.",
+        systemInstruction: "Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165, русые волосы, серые глаза, зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать.",
     });
 
     const generationConfig = {
@@ -157,6 +293,39 @@
             sendButton.click();
         }
     });
+
+    // Меню
+    const menuButton = document.getElementById('menuButton');
+    const menu = document.getElementById('menu');
+    const backButton = document.getElementById('backButton');
+    const languageButton = document.getElementById('languageButton');
+    const languageMenu = document.getElementById('languageMenu');
+
+    menuButton.addEventListener('click', () => {
+        menu.classList.toggle('active');
+    });
+
+    backButton.addEventListener('click', () => {
+        menu.classList.remove('active');
+        languageMenu.classList.remove('active'); // Закрываем языковое меню при возврате
+    });
+
+    languageButton.addEventListener('click', () => {
+        languageMenu.classList.toggle('active');
+    });
+
+    function selectLanguage(lang) {
+        alert(`Выбран язык: ${lang}`);
+        languageMenu.classList.remove('active'); // Закрыть меню выбора языка
+    }
+    
+    // Закрываем языковое меню при нажатии на фон
+    window.addEventListener('click', (event) => {
+        if (languageMenu.classList.contains('active') && !languageMenu.contains(event.target) && event.target !== languageButton) {
+            languageMenu.classList.remove('active');
+        }
+    });
+
 </script>
 
 </body>
