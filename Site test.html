@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nastya UltraOs v0.1.1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .chat-container {
+            border: 1px solid #ccc;
+            width: 90%;
+            max-width: 400px;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #chat {
+            flex: 1;
+            padding: 10px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #eee;
+        }
+        #input {
+            display: flex;
+            padding: 10px;
+            background-color: #fafafa;
+        }
+        #userInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #sendButton {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        #sendButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div id="chat"></div>
+    <div id="input">
+        <input type="text" id="userInput" placeholder="Type your message..." />
+        <button id="sendButton">Send</button>
+    </div>
+</div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+</script>
+
+<script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    const API_KEY = "AIzaSyAhxagvITOp6_QMgEAX0bimLtrFhJRTvzA"; // замените на фактический API-ключ
+    const genAI = new GoogleGenerativeAI(API_KEY);
+
+    const model = genAI.getGenerativeModel({
+        model: "gemini-2.0-flash",
+        systemInstruction: "Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165 , русые волосы, серые глаза , зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать.",
+    });
+
+    const generationConfig = {
+        temperature: 1,
+        topP: 0.95,
+        topK: 64,
+        maxOutputTokens: 8192,
+        responseMimeType: "text/plain",
+    };
+
+    const chat = model.startChat({
+        generationConfig,
+        history: [],
+    });
+
+    const chatDiv = document.getElementById('chat');
+    const userInput = document.getElementById('userInput');
+    const sendButton = document.getElementById('sendButton');
+
+    sendButton.addEventListener('click', async () => {
+        const userMessage = userInput.value;
+        if (!userMessage) return;
+
+        chatDiv.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+        userInput.value = '';
+
+        const result = await chat.sendMessage(userMessage);
+        const response = await result.response;
+        const text = await response.text();
+
+        chatDiv.innerHTML += `<div><strong>Gemini:</strong> ${text}</div>`;
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+    });
+
+    userInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            sendButton.click();
+        }
+    });
+</script>
+
+</body>
+</html>
