@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,9 +61,8 @@
             justify-content: flex-end;
             width: 100%;
             height: calc(100% - 50px); /* Учитываем высоту заголовка */
-            background-color: rgba(255, 255, 255, 0.01);
-            border: none; /* Убираем обводку */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px; /* Padding для отступа от краёв */
+            box-sizing: border-box;
             overflow: hidden;
         }
 
@@ -71,63 +70,79 @@
             display: flex;
             flex-direction: column-reverse;
             flex-grow: 1;
-            padding: 10px;
+            padding: 0; /* Убираем внутренний padding */
             overflow-y: auto;
-            border: none; /* Установка границ на null */
             background-color: transparent;
         }
 
         .message {
-            margin: 5px;
-            padding: 10px;
-            border-radius: 5px;
-            max-width: 70%;
-        }
+           margin: 5px 0;
+           padding: 15px;
+           border-radius: 10px;
+           max-width: 80%;
+           position: relative;
+           margin-left: 10px;
+           margin-right: 10px;
+           color: white;
+           text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Тень текста */
+           line-height: 1.5; /* Увеличение высоты строки */
+       }
 
-        .user-message {
-            border: 2px solid #40e0d0;
-            align-self: flex-end;
-            background-color: #e0f7fa;
-        }
+       .user-message {
+           background: linear-gradient(to right, #006f6f, #000000);
+           align-self: flex-end;
+       }
 
-        .ai-message {
-            border: 2px solid #007bff;
-            align-self: flex-start;
-            background-color: #e7f0ff;
-        }
+       .ai-message {
+           background: linear-gradient(to right, #000000, #00006f);
+           align-self: flex-start;
+       }
 
-        #input {
-            display: flex;
-            padding: 10px;
-            background: linear-gradient(to right, #001f3f, #000000);
-            width: 100%;
-            box-sizing: border-box;
-        }
+       .error-message {
+           background: linear-gradient(to right, #000000, #6f0000);
+           align-self: flex-start;
+       }
 
-        #userInput {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
+.input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
+    border-radius: 5px; /* Закруглённые углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Тень для глубины */
+}
 
-        #sendButton {
-            margin-left: 10px;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
+#userInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #007bff; /* Цвет рамки */
+    border-radius: 4px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    color: #fff; /* Цвет текста */
+}
 
-        #sendButton:hover {
-            background-color: #0056b3;
-        }
+#userInput::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Цвет текста в placeholder */
+}
 
-        /* Menu styles */
+#sendButton {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s; /* Плавный переход для цвета кнопки */
+}
+
+#sendButton:hover {
+    background-color: #0056b3;
+}
+
+        /* Стили для меню */
         .menu {
             display: none; /* Скрываем меню по умолчанию */
             position: fixed;
@@ -200,7 +215,7 @@
 
 <div class="header">
     <h1>
-        <span>Nastya</span>
+        <span>Настя</span>
         <span>UltraOs</span>
     </h1>
     <button class="menu-button" id="menuButton">⋮</button>
@@ -208,21 +223,21 @@
 
 <div class="chat-container">
     <div id="chat"></div>
-    <div id="input">
-        <input type="text" id="userInput" placeholder="Type your message..." />
-        <button id="sendButton">Send</button>
-    </div>
+<div id="input" class="input-container">
+    <input type="text" id="userInput" placeholder="Введите ваше сообщение..." />
+    <button id="sendButton">Отправить</button>
+</div>
 </div>
 
-<!-- Main Menu -->
+<!-- Главное меню -->
 <div class="menu" id="menu">
-    <button id="backButton">Back ←</button>
-    <button class="telegram" onclick="window.open('https://t.me/Miavy_room', '_blank')">Telegram Channel</button>
-    <button id="languageButton">Language</button>
+    <button id="backButton">Назад ←</button>
+    <button class="telegram" onclick="window.open('https://t.me/Miavy_room', '_blank')">Канал Telegram</button>
+    <button id="languageButton">Язык</button>
     <div class="menu-footer">
         <p>Разработчик - Miavy</p>
         <p>Команда - UltraOs</p>
-        <p>Версия - 0.1.6</p>
+        <p>Версия - 0.1.7</p>
     </div>
 </div>
 
@@ -278,14 +293,25 @@
         const userMessage = userInput.value;
         if (!userMessage) return;
 
-        chatDiv.innerHTML = `<div class="message user-message"><strong>You:</strong> ${userMessage}</div>` + chatDiv.innerHTML;
+        chatDiv.innerHTML = `<div class="message user-message"><strong>Вы:</strong> ${userMessage}</div>` + chatDiv.innerHTML;
         userInput.value = '';
 
-        const result = await chat.sendMessage(userMessage);
-        const response = await result.response;
-        const text = await response.text();
+        try {
+            const result = await chat.sendMessage(userMessage);
+            const response = await result.response;
+            const text = await response.text();
 
-        chatDiv.innerHTML = `<div class="message ai-message"><strong>Gemini:</strong> ${text}</div>` + chatDiv.innerHTML;
+            chatDiv.innerHTML = `<div class="message ai-message"><strong>Настя:</strong> ${text}</div>` + chatDiv.innerHTML;
+
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+            let errorMessage = 'Произошла ошибка. Пожалуйста, попробуйте еще раз позже.';
+            if (error.message.includes('NetworkError')) {
+                errorMessage = 'Нет подключения. Пожалуйста, проверьте интернет.';
+            }
+            // Добавляем ошибку в чат
+            chatDiv.innerHTML = `<div class="message error-message"><strong>Ошибка:</strong> ${errorMessage}</div>` + chatDiv.innerHTML;
+        }
     });
 
     userInput.addEventListener('keypress', (event) => {
