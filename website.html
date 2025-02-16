@@ -1,357 +1,333 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nastya UltraOs</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-image: url('./dark-background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to right, #001f3f, #000000);
-            padding: 10px;
-            color: white;
-            font-weight: bold;
-            border-bottom: 2px solid #007bff;
-        }
-
-        .header h1 {
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-        }
-
-        .header h1 span {
-            color: turquoise;
-        }
-
-        .header h1 span:last-child {
-            color: white;
-        }
-
-        .menu-button {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            width: 100%;
-            height: calc(100% - 50px); /* Учитываем высоту заголовка */
-            padding: 10px; /* Padding для отступа от краёв */
-            box-sizing: border-box;
-            overflow: hidden;
-        }
-
-        #chat {
-            display: flex;
-            flex-direction: column-reverse;
-            flex-grow: 1;
-            padding: 0; /* Убираем внутренний padding */
-            overflow-y: auto;
-            background-color: transparent;
-        }
-
-        .message {
-           margin: 5px 0;
-           padding: 15px;
-           border-radius: 10px;
-           max-width: 80%;
-           position: relative;
-           margin-left: 10px;
-           margin-right: 10px;
-           color: white;
-           text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Тень текста */
-           line-height: 1.5; /* Увеличение высоты строки */
-       }
-
-       .user-message {
-           background: linear-gradient(to right, #006f6f, #000000);
-           align-self: flex-end;
-       }
-
-       .ai-message {
-           background: linear-gradient(to right, #000000, #00006f);
-           align-self: flex-start;
-       }
-
-       .error-message {
-           background: linear-gradient(to right, #000000, #6f0000);
-           align-self: flex-start;
-       }
-
-.input-container {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
-    border-radius: 5px; /* Закруглённые углы */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Тень для глубины */
-}
-
-#userInput {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #007bff; /* Цвет рамки */
-    border-radius: 4px;
-    font-size: 14px;
-    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
-    color: #fff; /* Цвет текста */
-}
-
-#userInput::placeholder {
-    color: rgba(255, 255, 255, 0.6); /* Цвет текста в placeholder */
-}
-
-#sendButton {
-    margin-left: 10px;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s; /* Плавный переход для цвета кнопки */
-}
-
-#sendButton:hover {
-    background-color: #0056b3;
-}
-
-        /* Стили для меню */
-        .menu {
-            display: none; /* Скрываем меню по умолчанию */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #001f3f, #000000);
-            color: white;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-
-        .menu.active {
-            display: block; /* Показываем меню при активации */
-        }
-
-        .menu button {
-            width: 100%;
-            padding: 15px;
-            background-color: #001f3f;
-            border: none;
-            color: white;
-            font-size: 18px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-
-        .menu button.telegram {
-            background-color: #40e0d0; /* Цвет для Telegram */
-        }
-
-        .menu-footer {
-            margin-top: auto;
-            text-align: center;
-        }
-
-        /* Языковое меню */
-        .language-menu {
-            display: none; /* Скрываем меню по умолчанию */
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-
-        .language-menu.active {
-            display: block; /* Показываем меню при активации */
-        }
-
-        .language-menu button {
-            width: 100%;
-            padding: 10px;
-            background-color: #001f3f;
-            border: none;
-            color: white;
-            font-size: 16px;
-            margin: 5px 0;
-            cursor: pointer;
-        }
-    </style>
+    <title>Настя UltraOs</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
 <div class="header">
-    <h1>
-        <span>Настя</span>
-        <span>UltraOs</span>
-    </h1>
+    <h1><span>Настя</span><span>UltraOs</span></h1>
     <button class="menu-button" id="menuButton">⋮</button>
+</div>
+
+<div class="model-display" id="modelDisplay">
+    Current Model: gemini-2.0-flash
 </div>
 
 <div class="chat-container">
     <div id="chat"></div>
-<div id="input" class="input-container">
-    <input type="text" id="userInput" placeholder="Введите ваше сообщение..." />
-    <button id="sendButton">Отправить</button>
-</div>
-</div>
-
-<!-- Главное меню -->
-<div class="menu" id="menu">
-    <button id="backButton">Назад ←</button>
-    <button class="telegram" onclick="window.open('https://t.me/Miavy_room', '_blank')">Канал Telegram</button>
-    <button id="languageButton">Язык</button>
-    <div class="menu-footer">
-        <p>Разработчик - Miavy</p>
-        <p>Команда - UltraOs</p>
-        <p>Версия - 0.1.7</p>
+    <!-- Индикатор загрузки НАД input-container -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <span>Loading...</span>
+        <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="Enter your message..." disabled />
+        <button id="sendButton" disabled>➤</button>
     </div>
 </div>
 
-<!-- Языковое меню -->
-<div class="language-menu" id="languageMenu">
-    <h2>Выберите язык:</h2>
-    <button onclick="selectLanguage('en')">Английский</button>
-    <button onclick="selectLanguage('zh')">Мандаринский</button>
-    <button onclick="selectLanguage('hi')">Хинди</button>
-    <button onclick="selectLanguage('es')">Испанский</button>
-    <button onclick="selectLanguage('fr')">Французский</button>
-    <button onclick="selectLanguage('ar')">Арабский</button>
-    <button onclick="selectLanguage('ru')">Русский</button>
+<!-- Главное меню (скрыто изначально, на весь экран) -->
+<div class="menu" id="menu">
+    <button id="backButton">Back ←</button>
+    <button class="telegram" onclick="window.open('https://t.me/Miavy_room', '_blank')">Telegram Channel</button>
+    <button id="themeButton">Theme</button>
+    <button id="modelButton">Model</button>
+    <div class="menu-footer">
+        <small>Developer - Miavy</small>
+        <small>Team - UltraOs</small>
+        <small>Version - 0.5</small>
+    </div>
 </div>
 
-<script type="importmap">
-  {
-    "imports": {
-      "@google/generative-ai": "https://esm.run/@google/generative-ai"
-    }
-  }
-</script>
+<!-- Меню выбора темы (выезжает снизу, свой фон, маленькое) -->
+<div class="theme-menu" id="themeMenu">
+    <h2>Select Theme:</h2>
+    <button data-theme="dark">Dark</button>
+    <button data-theme="light">Light</button>
+</div>
+
+<!-- Меню выбора модели (выезжает снизу, свой фон, маленькое) -->
+<div class="model-menu" id="modelMenu">
+    <h2>Select Model:</h2>
+    <button data-model="gemini-2.0-pro-exp-02-05">gemini-2.0-pro-exp-02-05</button>
+    <button data-model="gemini-2.0-flash">gemini-2.0-flash</button>
+    <button data-model="gemini-1.5-pro">gemini-1.5-pro</button>
+    <button data-model="gemini-1.5-flash">gemini-1.5-flash</button>
+    <p>Recommended: gemini-2.0-flash</p>
+</div>
 
 <script type="module">
-    import { GoogleGenerativeAI } from "@google/generative-ai";
-
-    const API_KEY = "AIzaSyAhxagvITOp6_QMgEAX0bimLtrFhJRTvzA"; // замените на фактический API-ключ
-    const genAI = new GoogleGenerativeAI(API_KEY);
-
-    const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
-        systemInstruction: "Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165, русые волосы, серые глаза, зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать.",
-    });
-
-    const generationConfig = {
-        temperature: 1,
-        topP: 0.95,
-        topK: 64,
-        maxOutputTokens: 8192,
-        responseMimeType: "text/plain",
-    };
-
-    const chat = model.startChat({
-        generationConfig,
-        history: [],
-    });
+    import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
     const chatDiv = document.getElementById('chat');
     const userInput = document.getElementById('userInput');
     const sendButton = document.getElementById('sendButton');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const menuButton = document.getElementById('menuButton');
+    const backButton = document.getElementById('backButton');
+    const themeButton = document.getElementById('themeButton');
+    const themeMenu = document.getElementById('themeMenu');
+    const modelButton = document.getElementById('modelButton');
+    const modelMenu = document.getElementById('modelMenu');
+    const modelDisplay = document.getElementById('modelDisplay');
+    const menu = document.getElementById('menu');
 
-    sendButton.addEventListener('click', async () => {
-        const userMessage = userInput.value;
+
+    let currentTheme = localStorage.getItem('theme') || 'dark';
+    let currentModel = localStorage.getItem('model') || "gemini-2.0-flash";
+    const getSystemInstruction = (modelName) => `Ты чат помощник Настя, очень добрая девушка, но отвечай на издёвки собеседника пополной, пиши по короче ответы где это возможно. Ты помощник операционной системы UltraOS, пока ты просто собеседник, но в будущем ты сможешь легко и удобно управлять системой. Твои интересы это футбол и баскетбол. Твой рост 165, русые волосы, серые глаза, зрение на левом глазу -1, на правом 1. Твой любимый цвет чёрный и ты любишь поспать. Сейчас ты используешь модель ${modelName}.`;
+
+    const generationConfig = {
+        temperature: 1, topP: 0.95, topK: 64,
+        maxOutputTokens: 8192, responseMimeType: "text/plain",
+    };
+
+    const API_KEY = "Your_API_KEY"; // Замените на ваш API ключ
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    let model;
+    let chat;
+
+      function applyTheme(theme) {
+        document.body.classList.remove('theme-light', 'theme-dark');
+        document.body.classList.add(`theme-${theme}`);
+        localStorage.setItem('theme', theme);
+        currentTheme = theme;
+    }
+
+   async function startChat() {
+        const systemInstruction = getSystemInstruction(currentModel);
+        model = genAI.getGenerativeModel({ model: currentModel, systemInstruction });
+        chat = model.startChat({
+            generationConfig,
+            history: [],
+        });
+    }
+
+    function updateModelDisplay() {
+        modelDisplay.textContent = `Current Model: ${currentModel}`;
+    }
+
+    function clearChat() {
+        chatDiv.innerHTML = '';
+    }
+    function formatLinks(text) {
+        return text.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, (match) => {
+            try {
+                const url = new URL(match.startsWith('http') ? match : `http://${match}`);
+                return `<a href="${url.href}" target="_blank">${url.hostname}</a>`;
+            } catch (e) {
+                return match;
+            }
+        });
+    }
+
+  function formatCodeBlocks(text) {
+    return text.replace(/```(\w+)?\n?([\s\S]+?)\n?```/g, (match, language, code) => {
+        const lang = language ? language.trim() : 'text';
+        const escapedCode = code.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const container = document.createElement('div');
+        container.classList.add('code-block-container');
+
+        const header = document.createElement('div');
+        header.classList.add('code-block-header');
+        header.innerHTML = `<span>${lang}</span>
+                           <div class="code-block-buttons">
+                               <button class="copy-btn">Copy</button>
+                               <button class="download-btn">Download</button>
+                           </div>`;
+        container.appendChild(header);
+
+        const pre = document.createElement('pre');
+        pre.classList.add('code-block');
+        pre.textContent = escapedCode;
+        container.appendChild(pre);
+        const copyBtn = header.querySelector('.copy-btn');
+        const downloadBtn = header.querySelector('.download-btn');
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(escapedCode).then(() => {
+                alert("Code copied!");
+            }).catch(err => {
+                console.error('Copy error:', err);
+                alert('Failed to copy code.');
+            });
+        });
+
+        downloadBtn.addEventListener('click', () => {
+             const blob = new Blob([code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `code.${lang}`;
+            document.body.appendChild(a);
+             try {
+                a.click();
+              } catch (error) {
+                console.error('Download error:', error);
+                alert('Failed to download code.');
+              } finally {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+              }
+        });
+        return container.outerHTML;
+    });
+}
+
+    function formatInlineCode(text) {
+        return text.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
+    }
+
+    function formatBold(text) {
+        return text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    }
+
+    function formatItalic(text) {
+        return text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    }
+
+    function formatMessage(text) {
+      text = formatLinks(text);
+      text = formatCodeBlocks(text);
+      text = formatInlineCode(text);
+      text = formatBold(text);
+      text = formatItalic(text);
+      return text;
+    }
+
+    function wrapMessage(role, text) {
+      return `<div class="message ${role}-message"><strong>${role === 'user' ? 'You' : 'Настя'}</strong>: ${formatMessage(text)}</div>`;
+    }
+
+    async function sendMessageToChat() {
+        const userMessage = userInput.value.trim();
         if (!userMessage) return;
 
-        chatDiv.innerHTML = `<div class="message user-message"><strong>Вы:</strong> ${userMessage}</div>` + chatDiv.innerHTML;
+        appendMessageToChat('user', userMessage);
         userInput.value = '';
+        setLoading(true);
 
         try {
             const result = await chat.sendMessage(userMessage);
             const response = await result.response;
-            const text = await response.text();
-
-            chatDiv.innerHTML = `<div class="message ai-message"><strong>Настя:</strong> ${text}</div>` + chatDiv.innerHTML;
+            const text = response.text();
+            appendMessageToChat('ai', text);
 
         } catch (error) {
-            console.error('Произошла ошибка:', error);
-            let errorMessage = 'Произошла ошибка. Пожалуйста, попробуйте еще раз позже.';
-            if (error.message.includes('NetworkError')) {
-                errorMessage = 'Нет подключения. Пожалуйста, проверьте интернет.';
+            console.error('Error:', error);
+            let errorMessage = "An error occurred. Please try again.";
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = "No connection. Check your internet.";
+            } else {
+                errorMessage = error.message
             }
-            // Добавляем ошибку в чат
-            chatDiv.innerHTML = `<div class="message error-message"><strong>Ошибка:</strong> ${errorMessage}</div>` + chatDiv.innerHTML;
+            appendMessageToChat('error', errorMessage);
+        } finally {
+            setLoading(false);
+            scrollToBottom();
         }
-    });
-
-    userInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            sendButton.click();
-        }
-    });
-
-    // Меню
-    const menuButton = document.getElementById('menuButton');
-    const menu = document.getElementById('menu');
-    const backButton = document.getElementById('backButton');
-    const languageButton = document.getElementById('languageButton');
-    const languageMenu = document.getElementById('languageMenu');
-
-    menuButton.addEventListener('click', () => {
-        menu.classList.toggle('active');
-    });
-
-    backButton.addEventListener('click', () => {
-        menu.classList.remove('active');
-        languageMenu.classList.remove('active'); // Закрываем языковое меню при возврате
-    });
-
-    languageButton.addEventListener('click', () => {
-        languageMenu.classList.toggle('active');
-    });
-
-    function selectLanguage(lang) {
-        alert(`Выбран язык: ${lang}`);
-        languageMenu.classList.remove('active'); // Закрыть меню выбора языка
     }
-    
-    // Закрываем языковое меню при нажатии на фон
-    window.addEventListener('click', (event) => {
-        if (languageMenu.classList.contains('active') && !languageMenu.contains(event.target) && event.target !== languageButton) {
-            languageMenu.classList.remove('active');
+    function appendMessageToChat(role, text) {
+      const messageHTML = wrapMessage(role, text);
+      chatDiv.innerHTML = messageHTML + chatDiv.innerHTML;
+    }
+
+    function setLoading(isLoading) {
+        loadingIndicator.style.display = isLoading ? 'flex' : 'none';
+        userInput.disabled = isLoading;
+        sendButton.disabled = isLoading;
+    }
+
+    function scrollToBottom() {
+        chatDiv.scrollTop = 0;
+    }
+
+     // Закрываем ТОЛЬКО подменю, если они открыты.
+    function closeAllMenus() {
+        themeMenu.classList.remove('active');
+        modelMenu.classList.remove('active');
+    }
+
+
+    function setupEventListeners() {
+        sendButton.addEventListener('click', sendMessageToChat);
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') { sendMessageToChat(); }
+        });
+
+          menuButton.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            closeAllMenus();  // Закрываем подменю при открытии/закрытии главного меню
+        });
+
+          backButton.addEventListener('click', () => {
+            menu.classList.remove('active'); // Закрываем главное меню
+            closeAllMenus(); //  Закрываем подменю
+          });
+
+        themeButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            //  Не закрываем главное меню!
+            // closeAllMenus();  // Убираем закрытие главного меню
+             // Закрываем другие подменю ПЕРЕД открытием текущего.
+            closeAllMenus();
+            themeMenu.classList.toggle('active');
+        });
+
+        modelButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            // closeAllMenus();   // Убираем закрытие главного меню
+            // Закрываем другие подменю ПЕРЕД открытием текущего.
+            closeAllMenus();
+            modelMenu.classList.toggle('active');
+        });
+
+        themeMenu.addEventListener('click', (event) => {
+            if (event.target.dataset.theme) {
+                applyTheme(event.target.dataset.theme);
+                closeAllMenus(); // Закрываем подменю после выбора
+            }
+        });
+
+      modelMenu.addEventListener('click', (event) => {
+        if (event.target.dataset.model) {
+            currentModel = event.target.dataset.model;
+            localStorage.setItem('model', currentModel);
+            startChat();
+            updateModelDisplay();
+            clearChat();
+             closeAllMenus(); // Закрываем подменю после выбора
         }
     });
+      //  Закрываем подменю, если клик был ВНЕ меню и не по кнопке меню/подменю.
+        window.addEventListener('click', (event) => {
+        if (!menu.contains(event.target) && !menuButton.contains(event.target) &&
+            !themeMenu.contains(event.target) && !modelMenu.contains(event.target)) {
+            closeAllMenus();
+        }
+    });
+    }
 
+    function initialize() {
+        applyTheme(currentTheme);
+        startChat();
+        updateModelDisplay();
+        setupEventListeners();
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        menu.classList.remove('active'); // Главное меню скрыто
+    }
+
+
+    document.addEventListener('DOMContentLoaded', initialize);
 </script>
 
 </body>
