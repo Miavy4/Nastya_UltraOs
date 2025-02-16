@@ -1,0 +1,530 @@
+/* styles.css */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.3s ease;
+    color: var(--text-color);
+    background-image: var(--bg-image);
+}
+
+/* Изменения: ширина меню на весь экран */
+.menu, .theme-menu, .model-menu {
+    position: fixed;
+    box-sizing: border-box;
+    z-index: 1002;
+    transition: background 0.3s;
+    overflow-y: auto;
+    width: 100%; /* Добавлено: ширина на весь экран */
+}
+
+.menu {
+    display: none;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--menu-bg);
+}
+
+.menu.active {
+    display: block;
+}
+
+/* Изменения: ширина подменю на весь экран */
+.theme-menu, .model-menu {
+    display: none;
+    bottom: 0;
+    left: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    background: var(--theme-menu-bg);
+    width: 100%; /*  Ширина на весь экран (уже было) */
+    border-radius: 10px 10px 0 0;
+}
+
+.model-menu {
+    background: var(--model-menu-bg);
+}
+
+.theme-menu.active, .model-menu.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.menu button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    color: var(--menu-all-buttons-color);
+    font-size: 18px;
+    margin: 10px 0;
+    cursor: pointer;
+    background-color: var(--menu-button-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+}
+
+.menu button.telegram {
+    background-color: var(--telegram-button-bg);
+}
+
+.menu-footer {
+    margin-top: auto;
+    text-align: center;
+}
+
+.menu-footer small {
+    color: var(--menu-footer-color);
+    margin: 5px 0;
+    display: block;
+}
+
+.theme-menu {
+    padding: 10px;
+}
+
+.theme-menu button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    color: var(--theme-menu-button-color);
+    font-size: 16px;
+    margin: 5px 0;
+    cursor: pointer;
+    background-color: var(--theme-menu-button-bg);
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.theme-menu h2 {
+    color: var(--theme-menu-h2-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.model-menu {
+    padding: 10px;
+}
+
+.model-menu button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    font-size: 16px;
+    background-color: var(--model-menu-button-bg);
+    color: var(--model-menu-button-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+.model-menu button:hover {
+    background-color: var(--model-menu-button-hover-bg);
+}
+
+.model-menu p {
+    font-size: smaller;
+    margin-top: 10px;
+    color: var(--model-menu-p-color);
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 2px solid var(--header-border-color);
+    transition: all 0.3s ease;
+    color: var(--header-color);
+    background: var(--header-bg);
+    z-index: 1001;
+}
+
+.header h1 {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.header h1 span {
+    color: var(--header-span-color);
+}
+
+.menu-button {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: var(--menu-button-color);
+    padding: 0;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    flex-grow: 1;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
+    padding: 0;
+    overflow-y: auto;
+    background-color: transparent;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+}
+
+#chat::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+}
+
+#chat::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: 4px;
+    border: 2px solid var(--scrollbar-track-color);
+}
+
+#chat::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover-color);
+}
+
+.message {
+    margin: 5px 10px;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 80%;
+    position: relative;
+    text-shadow: var(--message-text-shadow);
+    line-height: 1.5;
+    transition: background 0.3s ease, color 0.3s ease;
+    color: var(--message-color);
+    box-sizing: border-box;
+}
+
+.user-message {
+    align-self: flex-end;
+    background: var(--user-message-bg);
+}
+
+.ai-message {
+    align-self: flex-start;
+    background: var(--ai-message-bg);
+}
+
+.error-message {
+    align-self: flex-start;
+    background: var(--error-message-bg);
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    transition: background 0.3s ease;
+    background: var(--input-bg);
+    z-index: 1001;
+}
+
+#userInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--input-text-color);
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s;
+    background: var(--input-bg);
+    box-sizing: border-box;
+}
+
+#userInput::placeholder {
+    color: var(--input-placeholder-color);
+}
+
+#sendButton {
+    margin-left: 10px;
+    padding: 10px 15px;
+    color: var(--send-button-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--send-button-bg);
+    flex-shrink: 0;
+}
+
+#sendButton:hover {
+    background-color: var(--send-button-hover-bg);
+}
+
+.message a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.message a:hover {
+    text-decoration: underline;
+    color: var(--link-hover-color);
+}
+
+.message strong {
+    font-weight: bold;
+}
+
+.message em {
+    font-style: italic;
+}
+
+.code-block-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.code-block-header {
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 0.9em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.code-block-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+.code-block-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.code-block {
+    padding: 10px;
+    overflow-x: auto;
+    color: #e83e8c;
+    font-family: monospace;
+    white-space: pre;
+    scrollbar-width: thin;
+    scrollbar-color: #666 #333;
+    box-sizing: border-box;
+}
+
+.code-block::-webkit-scrollbar {
+    height: 6px;
+}
+
+.code-block::-webkit-scrollbar-track {
+    background: #333;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 3px;
+}
+
+.inline-code {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+    color: #e83e8c;
+}
+
+.loading-indicator {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    z-index: 1002;
+    color: var(--loading-indicator-color);
+}
+
+.loading-dots {
+    display: flex;
+    margin-left: 5px;
+}
+
+.dot {
+    width: var(--dot-size);
+    height: var(--dot-size);
+    border-radius: 50%;
+    background-color: currentColor;
+    margin: 0 var(--dot-margin);
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.model-display {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid var(--header-border-color);
+    color: var(--header-color);
+    background-color: var(--input-bg);
+    z-index: 1001;
+}
+
+:root {
+    --bg-image: url('./dark-background.png');
+    --header-bg: linear-gradient(to right, #001f3f, #000000);
+    --header-color: white;
+    --header-border-color: #007bff;
+    --menu-bg: linear-gradient(to bottom, #001f3f, #000000);
+    --menu-color: white;
+    --menu-button-bg: #001f3f;
+    --menu-all-buttons-color: white;
+    --input-bg: rgba(0, 0, 0, 0.7);
+    --input-border-color: #007bff;
+    --input-text-color: white;
+    --input-placeholder-color: rgba(255, 255, 255, 0.6);
+    --user-message-bg: linear-gradient(to right, #006f6f, #000000);
+    --ai-message-bg: linear-gradient(to right, #000000, #00006f);
+    --error-message-bg: linear-gradient(to right, #000000, #6f0000);
+    --theme-menu-bg: #001f3f;
+    --theme-menu-button-bg: #001f3f;
+    --theme-menu-button-color: white;
+    --theme-menu-h2-color: white;
+    --send-button-bg: #007bff;
+    --send-button-color: white;
+    --send-button-hover-bg: #0056b3;
+    --telegram-button-bg: #40e0d0;
+    --menu-button-color: white;
+    --text-color: white;
+    --message-color: white;
+    --link-color: #007bff;
+    --link-hover-color: #0056b3;
+    --header-span-color: turquoise;
+    --menu-footer-color: white;
+    --message-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    --scrollbar-thumb-color: #666;
+    --scrollbar-track-color: #333;
+    --scrollbar-thumb-hover-color: #999;
+    --loading-indicator-color: white;
+    --dot-size: 8px;
+    --dot-margin: 2px;
+    --model-menu-bg: #000000;
+    --model-menu-color: white;
+    --model-menu-button-bg: #333;
+    --model-menu-button-color: white;
+    --model-menu-button-hover-bg: #555;
+    --model-menu-p-color: white;
+}
+
+.theme-light {
+    --bg-image: url('./light-background.png');
+    --header-bg: linear-gradient(to right, #b3d9ff, #ffffff);
+    --header-color: #333;
+    --header-border-color: #4285f4;
+    --menu-bg: linear-gradient(to bottom, #b3d9ff, #ffffff);
+    --menu-color: #333;
+    --menu-button-bg: #b3d9ff;
+    --menu-all-buttons-color: #333;
+    --input-bg: rgba(179, 217, 255, 0.7);
+    --input-border-color: #4285f4;
+    --input-text-color: #333;
+    --input-placeholder-color: rgba(0, 0, 0, 0.6);
+    --user-message-bg: linear-gradient(to right, #90caf9, #ffffff);
+    --ai-message-bg: linear-gradient(to right, #ffffff, #90caf9);
+    --error-message-bg: linear-gradient(to right, #ffffff, #ffcdd2);
+    --theme-menu-bg: #b3d9ff;
+    --theme-menu-button-bg: #b3d9ff;
+    --theme-menu-button-color: #333;
+    --theme-menu-h2-color: black;
+    --send-button-bg: #007bff;
+    --send-button-color: white;
+    --send-button-hover-bg: #0056b3;
+    --telegram-button-bg: #40e0d0;
+    --menu-button-color: black;
+    --text-color: #333;
+    --message-color: #333;
+    --link-color: #007bff;
+    --link-hover-color: #0056b3;
+    --header-span-color: #008b8b;
+    --menu-footer-color: black;
+    --message-text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+    --scrollbar-thumb-color: #bbb;
+    --scrollbar-track-color: #eee;
+    --scrollbar-thumb-hover-color: #999;
+    --loading-indicator-color: #333;
+    --model-menu-bg: #ffffff;
+    --model-menu-color: black;
+    --model-menu-button-bg: #b3d9ff;
+    --model-menu-button-color: #333;
+    --model-menu-button-hover-bg: #a2c8e8;
+    --model-menu-p-color: #333;
+}
+
+/* Медиа-запросы (адаптивность) - убираем ограничение ширины */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1em;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+/*  Удаляем, так как ширина и так 100%
+    .theme-menu, .model-menu {
+        max-width: 95%;
+        width: 100%;
+    }
+*/
+}
